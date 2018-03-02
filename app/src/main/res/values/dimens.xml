@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="std_margin">8dp</dimen>
+    <dimen name="min_margin">4dp</dimen>
+    <dimen name="min_card_height">75dp</dimen>
+</resources>
