@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def localPropertiesFile = rootProject.file("local.properties")
+def localProperties = new Properties()
+localProperties.load(localPropertiesFile.newDataInputStream())
+
 buildscript {
     ext {
         android_support_library_version = '27.1.0'
@@ -20,7 +24,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [ googlePlacesApiKey: "AIzaSyAhPqm_D3eahicHbVhY3YJUMi2PyRAD--4"]
+        manifestPlaceholders = [googlePlacesApiKey: "${localProperties.getProperty("places.api.key")}"]
+        buildConfigField "String", "ApiKey", "\"${localProperties.getProperty("darksky.api.key")}\""
     }
     buildTypes {
         release {
@@ -34,18 +39,15 @@ android {
     productFlavors {
         develop {
             versionNameSuffix "-dev"
-            buildConfigField "String", "ApiKey", '"d6a9e3b7fc54aa134a9e155443741540"'
             buildConfigField "String", "ApiUrl", '"https://api.darksky.net/forecast/"'
             dimension "default"
         }
         qa {
             versionNameSuffix "-qa"
-            buildConfigField "String", "ApiKey", '"d6a9e3b7fc54aa134a9e155443741540"'
             buildConfigField "String", "ApiUrl", '"https://api.darksky.net/forecast/"'
             dimension "default"
         }
         production {
-            buildConfigField "String", "ApiKey", '"d6a9e3b7fc54aa134a9e155443741540"'
             buildConfigField "String", "ApiUrl", '"https://api.darksky.net/forecast/"'
             dimension "default"
         }
@@ -84,7 +86,7 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$dagger2_version"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger2_version"
     annotationProcessor "com.google.dagger:dagger-android-processor:$dagger2_version"
-    implementation ("com.google.dagger:dagger:$dagger2_version") {
+    implementation("com.google.dagger:dagger:$dagger2_version") {
         exclude group: "javax.inject"
     }
     //
