@@ -1,8 +1,13 @@
 apply plugin: 'com.android.application'
 
-def localPropertiesFile = rootProject.file("local.properties")
 def localProperties = new Properties()
-localProperties.load(localPropertiesFile.newDataInputStream())
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.newDataInputStream())
+} else {
+    localProperties.setProperty("places.api.key", System.getenv("PLACES_API_KEY"))
+    localProperties.setProperty("darksky.api.key", System.getenv("DARKSKY_API_KEY"))
+}
 
 buildscript {
     ext {
